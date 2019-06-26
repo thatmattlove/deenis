@@ -12,7 +12,7 @@ import logzero
 from logzero import logger
 
 # Project Imports
-import config
+from deenis import config
 
 # Logzero Configuration
 if config.debug_state():

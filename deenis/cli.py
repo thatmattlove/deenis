@@ -6,7 +6,7 @@ CLI for Accessing Deenis
 import click
 
 # Project Imports
-import execute
+from deenis import execute
 
 
 @click.group(

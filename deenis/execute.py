@@ -3,7 +3,7 @@ Main Deenis Front End
 """
 
 # Project Imports
-import call
+from deenis import call
 
 
 def host(ipv4, ipv6, fqdn):
