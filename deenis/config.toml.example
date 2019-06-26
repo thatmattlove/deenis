@@ -1,0 +1,10 @@
+debug = false
+
+[provider.cloudflare.api]
+baseurl = "https://api.cloudflare.com/client/v4/"
+email = "name@example.com"
+key = "1234"
+
+[zone.'example.com']
+providers = ["cloudflare"]
+direction = "forward"
