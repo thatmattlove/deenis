@@ -18,4 +18,5 @@ setup(
     ],
     license="BSD 3-Clause Clear License",
     long_description=open("README.md").read(),
+    scripts=["bin/deenis.py"],
 )
