@@ -1,9 +1,12 @@
 from distutils.core import setup
 
 import sys
+import shutil
 
 if sys.version_info < (3, 6, 2):
     sys.exit("Python < 3.6.2 is required.")
+
+shutil.copyfile("bin/deenis.py", "bin/deenis")
 
 setup(
     name="Deenis",
@@ -18,5 +21,5 @@ setup(
     ],
     license="BSD 3-Clause Clear License",
     long_description=open("README.md").read(),
-    scripts=["bin/deenis.py"],
+    scripts=["bin/deenis"],
 )
