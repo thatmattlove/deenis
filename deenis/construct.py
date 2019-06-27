@@ -18,16 +18,14 @@ def records(**kwargs):
         },
     ]
     """
-    hostname = kwargs["hostname"]
-    if not hostname:
+    if not kwargs["hostname"]:
         raise AttributeError("A hostname is required")
-    domain_attr = {}
-    hosts = hostname.split(".")
-    domains = hosts[-2:]
-    host = hosts[0:-2:]
-    domain_attr["fqdn"] = hostname
-    domain_attr["domain"] = f"{domains[0]}.{domains[1]}"
-    domain_attr["host"] = ".".join(host)
+    hosts = kwargs["hostname"].split(".")
+    domain_attr = {
+        "fqdn": kwargs["hostname"],
+        "domain": hosts[-2:][0] + "." + hosts[-2:][1],
+        "host": ".".join(hosts[0:-2:]),
+    }
     records_list = []
     if kwargs["ipv4"]:
         try:
@@ -51,7 +49,7 @@ def records(**kwargs):
                 z_reverse4: {
                     "type": "PTR",
                     "name": str(ipv4).split(".")[3],
-                    "content": hostname,
+                    "content": kwargs["hostname"],
                 }
             }
             records_list.append(reverse_4)
@@ -77,7 +75,7 @@ def records(**kwargs):
                 z_reverse6: {
                     "type": "PTR",
                     "name": z_reverse6_host,
-                    "content": hostname,
+                    "content": kwargs["hostname"],
                 }
             }
             records_list.append(reverse_6)

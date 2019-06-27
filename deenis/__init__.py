@@ -15,7 +15,7 @@ from deenis import construct
 class Deenis:
     """Main Deenis class - initializes with config parameters from file or dictionary input"""
 
-    # pylint: disable=invalid-name
+    # pylint: disable=invalid-name,too-few-public-methods
     # Allowing PascalCase for public methods
 
     def __init__(self, config_params=None):
