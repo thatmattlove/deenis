@@ -107,17 +107,20 @@ for record in records:
 
 ### As a CLI Tool
 
+When running as a CLI tool, a config file must be provided. An example has been provided in `deenis/config.toml.example`
+
 ```console
 $ deenis --help
-Usage: cli.py host [OPTIONS]
+Usage: deenis host [OPTIONS]
 
   Add a Host Record
 
 Options:
-  -4, --ipv4 TEXT  IPv4 Address
-  -6, --ipv6 TEXT  IPv6 Address
-  -f, --fqdn TEXT  FQDN  [required]
-  --help           Show this message and exit.
+  -c, --config-file TEXT   Path to TOML Config File  [required]
+  -4, --ipv4-address TEXT  IPv4 Address
+  -6, --ipv6-address TEXT  IPv6 Address
+  -f, --fqdn TEXT          FQDN  [required]
+  --help                   Show this message and exit.
 ```
 
 # License
