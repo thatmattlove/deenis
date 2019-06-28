@@ -15,7 +15,7 @@ setup(
     packages=["deenis"],
     install_requires=[
         "click>=6.7",
-        "logzero>=1.5.0",
+        "diskcache>=3.1.1" "logzero>=1.5.0",
         "requests>=2.21.0",
         "toml>=0.10.0",
     ],

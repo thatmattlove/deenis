@@ -11,6 +11,8 @@ import os
 from deenis import call
 from deenis import construct
 
+from logzero import logger
+
 
 class Deenis:
     """Main Deenis class - initializes with config parameters from file or dictionary input"""
@@ -35,36 +37,38 @@ class Deenis:
                 import toml
 
                 self.conf = toml.load(self.config_params)
-        self.providers = [p for p in self.conf["provider"]]
-        self.zones = [z for z in self.conf["zone"]]
+        self.providers = [provider for provider in self.conf["provider"]]
+        self.zones = [zone for zone in self.conf["zone"]]
         self.zp_map = {}
-        for p in self.providers:
-            self.zp_map[p] = []
-            for z in self.zones:
-                if p in self.conf["zone"][z]["providers"]:
-                    self.zp_map[p].append(z)
+        for provider in self.providers:
+            self.zp_map[provider] = []
+            for zone in self.zones:
+                if provider in self.conf["zone"][zone]["providers"]:
+                    self.zp_map[provider].append(zone)
 
     def AddHost(self, input_params):
         """Attempts to add a "single" host record. For a given FQDN, will add A, AAAA, and 2 PTR \
         records."""
         records = construct.records(**input_params)
-        zones = [a for b in [r.keys() for r in records] for a in b]
         response = None
-        for zone in zones:
-            if not self.conf["zone"].get(zone, None):
-                raise AttributeError("Zone {} is not defined".format(zone))
-            zone_providers = self.conf["zone"][zone].get("providers")
+        add_map = {}
+        filtered_records = []
+        for record in records:
+            zone_name = [zone for zone in record.keys()][0]
+            if not self.conf["zone"].get(zone_name, None):
+                raise AttributeError("Zone {} is not defined".format(zone_name))
+            zone_providers = self.conf["zone"][zone_name].get("providers")
             for provider in zone_providers:
-                zone_map = self.zp_map.get(provider)
+                provider_zones = self.zp_map.get(provider)
                 provider_conf = self.conf["provider"].get(provider, None)
                 if not provider_conf:
                     raise AttributeError("Provider {} is not defined".format(provider))
-                filtered_records = []
-                for r in records:
-                    for z in r.keys():
-                        if z in zone_map:
-                            filtered_records.append({z: r[z]})
-                            response = getattr(
-                                call.Provider(filtered_records), provider
-                            )(provider_conf)
-        return response
+                if zone_name in provider_zones:
+                    filtered_records.append({zone_name: record[zone_name]})
+                add_map[provider] = (provider_conf, filtered_records)
+        for provider in add_map.keys():
+            response_class = getattr(call, provider)
+            response = response_class(add_map[provider][0]).add_record(
+                add_map[provider][1]
+            )
+            return response
