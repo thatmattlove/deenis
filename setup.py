@@ -3,8 +3,8 @@ from distutils.core import setup
 import sys
 import shutil
 
-if sys.version_info < (3, 6, 2):
-    sys.exit("Python < 3.6.2 is required.")
+if sys.version_info < (3, 6):
+    sys.exit("Python 3.6+ is required.")
 
 shutil.copyfile("bin/deenis.py", "bin/deenis")
 
@@ -15,7 +15,8 @@ setup(
     packages=["deenis"],
     install_requires=[
         "click>=6.7",
-        "diskcache>=3.1.1" "logzero>=1.5.0",
+        "diskcache>=3.1.1",
+        "logzero>=1.5.0",
         "requests>=2.21.0",
         "toml>=0.10.0",
     ],
