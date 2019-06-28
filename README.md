@@ -18,32 +18,6 @@ Currently, only [Cloudflare DNS](https://www.cloudflare.com/dns/) is supported, 
 $ pip3 install git+https://github.com/checktheroads/deenis.git
 ```
 
-## Configuration
-
-### Copy Example TOML Config File
-
-```console
-$ cp deenis/config.toml.example deenis/config.toml
-$ nano deenis/config.toml
-```
-
-### Modify Config Variables
-
-```toml
-debug = false
-
-[provider.cloudflare.api]
-baseurl = "https://api.cloudflare.com/client/v4/"
-email = "name@example.com"
-key = "1234"
-
-[zone.'example.com']
-providers = ["cloudflare"]
-direction = "forward"
-```
-
-*Note: the* `[zone]` *table is not used for anything yet.*
-
 ## Usage
 
 ### As a Python Module
