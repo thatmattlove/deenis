@@ -19,7 +19,7 @@ setup(
         "requests>=2.21.0",
         "toml>=0.10.0",
     ],
-    license="BSD 3-Clause Clear License",
+    license="Do What The F*ck You Want To Public License",
     long_description=open("README.md").read(),
     scripts=["bin/deenis"],
 )
