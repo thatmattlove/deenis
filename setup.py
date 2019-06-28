@@ -3,8 +3,8 @@ from distutils.core import setup
 import sys
 import shutil
 
-if sys.version_info < (3, 6, 2):
-    sys.exit("Python < 3.6.2 is required.")
+if sys.version_info < (3, 6):
+    sys.exit("Python 3.6+ is required.")
 
 shutil.copyfile("bin/deenis.py", "bin/deenis")
 
