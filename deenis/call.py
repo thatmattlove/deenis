@@ -4,6 +4,7 @@ Defines and Executes Actions Per-Provider
 
 # Standard Imports
 import json
+import tempfile
 
 # Module Imports
 import requests
@@ -11,7 +12,9 @@ import diskcache
 
 from logzero import logger
 
-cache = diskcache.Cache("/tmp/deenis")
+cache_dir = tempfile.mkdtemp()
+
+cache = diskcache.Cache(cache_dir)
 
 
 class cloudflare:
