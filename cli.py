@@ -50,12 +50,14 @@ def host(**click_input):
                     bold=True,
                 )
             )
+    elif click_input["config_file"]:
+        config_path = Path().resolve(click_input["config_file"])
     if not click_input["ipv4"] and not click_input["ipv6"]:
         raise click.UsageError(
             click.style("At least one IP Address is required", fg="red", bold=True)
         )
     try:
-        responses = Deenis(click_input["config_file"]).AddHost(
+        responses = Deenis(config_path).AddHost(
             {
                 "hostname": click_input["fqdn"],
                 "ipv4": click_input["ipv4"],
