@@ -57,7 +57,7 @@ def host(**click_input):
             click.style("At least one IP Address is required", fg="red", bold=True)
         )
     try:
-        responses = Deenis(config_path).AddHost(
+        responses = Deenis(str(config_path)).AddHost(
             {
                 "hostname": click_input["fqdn"],
                 "ipv4": click_input["ipv4"],
