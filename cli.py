@@ -31,14 +31,25 @@ def add_records():
 
 
 @add_records.command("host", help="Add a Host Record")
-@click.option(
-    "-c", "--config-file", "config_file", required=True, help="Path to TOML Config File"
-)
+@click.option("-c", "--config-file", "config_file", help="Path to YAML Config File")
 @click.option("-4", "--ipv4-address", "ipv4", default=None, help="IPv4 Address")
 @click.option("-6", "--ipv6-address", "ipv6", default=None, help="IPv6 Address")
 @click.option("-f", "--fqdn", "fqdn", required=True, help="FQDN")
 def host(**click_input):
     """Add host records from CLI"""
+    if not click_input["config_file"]:
+        config_path = Path.cwd().joinpath("deenis.yaml")
+        if not config_path.exists():
+            raise click.UsageError(
+                click.style(
+                    (
+                        f"Config file not specified and not found at {config_path}. "
+                        "Please specify a config file path."
+                    ),
+                    fg="red",
+                    bold=True,
+                )
+            )
     if not click_input["ipv4"] and not click_input["ipv6"]:
         raise click.UsageError(
             click.style("At least one IP Address is required", fg="red", bold=True)
