@@ -8,7 +8,7 @@ if sys.version_info < (3, 6):
 import shutil
 from pathlib import Path
 
-working_dir = Path.resolve(__file__).parent
+working_dir = Path().resolve(__file__)
 bin_dir = working_dir.joinpath("bin")
 lib_file = working_dir.joinpath("cli.py")
 bin_file = bin_dir.joinpath("deenis")
