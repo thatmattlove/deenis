@@ -82,7 +82,7 @@ for record in records:
 
 ### As a CLI Tool
 
-When running as a CLI tool, a config file must be provided. An example has been provided in `examples/deenis.yaml`
+When running as a CLI tool, a config file must be provided. An example has been provided in `examples/deenis.yaml`. A path can be provided, or if `deenis.yaml` is in the current directory (and a path is not specified) it will be used.
 
 ```console
 $ deenis --help
