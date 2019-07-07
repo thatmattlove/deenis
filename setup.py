@@ -23,7 +23,7 @@ with open("README.md", "r") as ld:
 
 setup(
     name="Deenis",
-    version="0.0.1",
+    version="0.0.2",
     author="Matt Love",
     author_email="matt@allroads.io",
     description="A Python 3 DNS Module & CLI Tool to Automate Boring DNS Tasks",
