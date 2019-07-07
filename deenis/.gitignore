@@ -1,6 +1,6 @@
 # Project Specific
 .DS_Store
-config.toml
+*.yaml
 test.py
 
 # Byte-compiled / optimized / DLL files

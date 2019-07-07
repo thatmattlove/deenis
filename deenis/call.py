@@ -10,8 +10,6 @@ import tempfile
 import requests
 import diskcache
 
-from logzero import logger
-
 cache_dir = tempfile.mkdtemp()
 
 cache = diskcache.Cache(cache_dir)
@@ -43,7 +41,6 @@ class cloudflare:
         """Gets Cloudflare zone_id by querying the list of zones endpoint, filtered by the zone \
         name being queried"""
         zone_id = cache.get(zone)
-        logger.debug(f"Pre-Run Zone ID: {zone_id}")
         if not zone_id:
             try:
                 endpoint = self.url + "zones/"
@@ -103,14 +100,14 @@ class cloudflare:
                         # For HTTP responses that would indicate a code-level issue, raise exception
                         raise RuntimeError(
                             (
-                                res_raw.status_code,
+                                "Failure",
                                 *tuple(provider_params.values())[0:3],
                                 res_json["errors"],
                             )
                         )
                     output.append(
                         (
-                            res_raw.status_code,
+                            "Success",
                             *tuple(provider_params.values())[0:3],
                             res_json["errors"],
                         )

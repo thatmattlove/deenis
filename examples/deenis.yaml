@@ -1,0 +1,11 @@
+debug: false
+provider:
+    cloudflare:
+        api:
+            baseurl: https://api.cloudflare.com/client/v4/
+            email: name@example.com
+            key: asdf1234
+zone:
+    direction: forward
+    providers:
+        - cloudflare

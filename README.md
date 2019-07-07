@@ -22,7 +22,7 @@ $ pip3 install git+https://github.com/checktheroads/deenis.git
 
 ### As a Python Module
 
-Deenis needs to be initialized with a configuration. This can be a dictionary or otherwise imported configuration from your main project, or the aboslute path to a TOML configuration file can be used. Pythonically cheeky example provided below:
+Deenis needs to be initialized with a configuration. This can be a dictionary or otherwise imported configuration from your main project, or the aboslute path to a YAML configuration file can be used. Pythonically cheeky example provided below:
 
 ```python
 import deenis
@@ -58,7 +58,8 @@ if your_preference is "dict":
       }
     }
 elif your_preference is "file":
-  deenis_config = os.path.join(os.path.abspath("."), "config.toml")
+    from pathlib import Path
+    deenis_config = Path().resolve().joinpath("deenis.yaml")
 
 # Initialize the module with a configuration
 dns = deenis.Deenis(deenis_config)
@@ -81,7 +82,7 @@ for record in records:
 
 ### As a CLI Tool
 
-When running as a CLI tool, a config file must be provided. An example has been provided in `deenis/config.toml.example`
+When running as a CLI tool, a config file must be provided. An example has been provided in `examples/deenis.yaml`
 
 ```console
 $ deenis --help

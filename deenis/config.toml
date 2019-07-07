@@ -1,0 +1,43 @@
+debug = false
+
+[provider.cloudflare.api]
+baseurl = "https://api.cloudflare.com/client/v4/"
+email = "peering@oscloud.io"
+key = "228b3cb0a93ab9a6b9a862d634979e6e52553"
+
+[provider.google.api]
+baseurl = ""
+email = ""
+key = ""
+
+[zone.'omnificent.io']
+providers = ["cloudflare"]
+direction = "forward"
+
+[zone.'oscloud.io']
+providers = ["cloudflare"]
+direction = "forward"
+
+[zone.'92.34.199.in-addr.arpa']
+providers = ["cloudflare"]
+direction = "reverse"
+
+[zone.'93.34.199.in-addr.arpa']
+providers = ["cloudflare"]
+direction = "reverse"
+
+[zone.'94.34.199.in-addr.arpa']
+providers = ["cloudflare"]
+direction = "reverse"
+
+[zone.'95.34.199.in-addr.arpa']
+providers = ["cloudflare"]
+direction = "reverse"
+
+[zone.'0.c.0.c.4.0.6.2.ip6.arpa']
+providers = ["cloudflare"]
+direction = "reverse"
+
+[zone.'example.com']
+providers = ["google"]
+direction = "forward"

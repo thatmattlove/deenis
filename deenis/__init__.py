@@ -6,6 +6,7 @@ __version__ = "0.0.1"
 
 # Standard Imports
 import os
+from pathlib import Path
 
 # Project Imports
 from deenis import call
@@ -24,19 +25,21 @@ class Deenis:
         self.config_params = config_params
         if not self.config_params:
             raise ValueError(
-                "A TOML config file or a parameters dictionary must be specified"
+                "A YAML config file or a parameters dictionary must be specified"
             )
         if isinstance(self.config_params, dict):
             self.conf = self.config_params
         elif isinstance(self.config_params, str):
-            if not os.path.exists(self.config_params):
+            config_path = Path(config_params).resolve()
+            if not config_path.exists():
                 raise FileNotFoundError(
-                    "Config file {} not found.".format(self.config_params)
+                    "Config file {} not found.".format(self.config_path)
                 )
-            if os.path.exists(self.config_params):
-                import toml
+            elif config_path.exists():
+                import yaml
 
-                self.conf = toml.load(self.config_params)
+                with open(config_path) as config_yaml:
+                    self.conf = yaml.safe_load(config_yaml)
         self.providers = [provider for provider in self.conf["provider"]]
         self.zones = [zone for zone in self.conf["zone"]]
         self.zp_map = {}
@@ -50,7 +53,7 @@ class Deenis:
         """Attempts to add a "single" host record. For a given FQDN, will add A, AAAA, and 2 PTR \
         records."""
         records = construct.records(**input_params)
-        response = None
+        response = []
         add_map = {}
         filtered_records = []
         for record in records:
@@ -68,7 +71,7 @@ class Deenis:
                 add_map[provider] = (provider_conf, filtered_records)
         for provider in add_map.keys():
             response_class = getattr(call, provider)
-            response = response_class(add_map[provider][0]).add_record(
+            provider_response = response_class(add_map[provider][0]).add_record(
                 add_map[provider][1]
             )
-            return response
+            return provider_response

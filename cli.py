@@ -4,12 +4,15 @@ CLI for Accessing Deenis
 """
 # Standard Imports
 import sys
+from pathlib import Path
 
 # Module Imports
 import click
 
+# Path Fixes
+working_dir = Path(__file__).resolve().parent
+sys.path.append(str(working_dir))
 # Project Imports
-sys.path.append(".")
 from deenis import Deenis
 
 
@@ -50,17 +53,28 @@ def host(**click_input):
         )
         if responses:
             for res in responses:
-                if res[0] in (200,):
+                status, record_type, record, target, errors = res
+                if status == "Success":
                     click.echo(
-                        click.style(
-                            f"Successfully added: {res[1]}", fg="green", bold=True
-                        )
+                        "Added "
+                        + click.style(record_type, fg="green", bold=True)
+                        + " Record for "
+                        + click.style(record, fg="yellow", bold=True)
+                        + " Pointing to "
+                        + click.style(target, fg="blue", bold=True)
                     )
-                elif res[0] in (401, 403, 405, 415, 429):
+                elif status == "Failure":
                     click.echo(
-                        click.style(f"Error adding: {res[1]}", fg="magenta", bold=True)
-                        + click.style(f"Errors: {res[2]}", fg="magenta")
+                        "Error Adding "
+                        + click.style(record_type, fg="magenta", bold=True)
+                        + " Record for "
+                        + click.style(record, fg="cyan", bold=True)
+                        + " Pointing to "
+                        + click.style(target, fg="red", bold=True)
+                        + f"\nErrors:\n"
                     )
+                    for err in errors:
+                        click.secho(err, fg="red")
         if not responses:
             click.secho("\nNo records were added", fg="magenta", bold=True)
     except (RuntimeError, AttributeError) as error_exception:

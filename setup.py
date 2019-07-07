@@ -1,12 +1,22 @@
 from distutils.core import setup
 
 import sys
-import shutil
 
 if sys.version_info < (3, 6):
     sys.exit("Python 3.6+ is required.")
 
-shutil.copyfile("bin/deenis.py", "bin/deenis")
+import shutil
+from pathlib import Path
+
+working_dir = Path.resolve(__file__).parent
+bin_dir = working_dir.joinpath("bin")
+lib_file = working_dir.joinpath("cli.py")
+bin_file = bin_dir.joinpath("deenis")
+
+if not bin_dir.exists():
+    bin_dir.mkdir()
+
+shutil.copyfile("cli.py", bin_file)
 
 with open("README.md", "r") as ld:
     long_description = ld.read()
@@ -25,7 +35,7 @@ setup(
         "diskcache>=3.1.1",
         "logzero>=1.5.0",
         "requests>=2.21.0",
-        "toml>=0.10.0",
+        "pyyaml>=5.1.1",
     ],
     license="Do What The F*ck You Want To Public License",
     long_description=long_description,
