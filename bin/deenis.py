@@ -50,11 +50,16 @@ def host(**click_input):
         )
         if responses:
             for res in responses:
-                if res["success"]:
-                    click.echo(click.style(f'{res["message"]}', fg="green", bold=True))
-                if not res["success"]:
+                if res[0] in (200,):
                     click.echo(
-                        click.style(f'{res["message"]}', fg="magenta", bold=True)
+                        click.style(
+                            f"Successfully added: {res[1]}", fg="green", bold=True
+                        )
+                    )
+                elif res[0] in (401, 403, 405, 415, 429):
+                    click.echo(
+                        click.style(f"Error adding: {res[1]}", fg="magenta", bold=True)
+                        + click.style(f"Errors: {res[2]}", fg="magenta")
                     )
         if not responses:
             click.secho("\nNo records were added", fg="magenta", bold=True)
