@@ -18,9 +18,9 @@ from deenis import Deenis
 
 @click.group(
     help=(
-        "Deenis can be used to group and automate boring DNS tasks. For example, `host` can take "
-        "a hostname, IPv4 Address, and IPv6 Address, and create forward A & AAAA, and reverse "
-        "PTR records (4 actions) with a single command."
+        "Deenis can be used to group and automate boring DNS tasks. For example, "
+        "`host` can take a hostname, IPv4 Address, and IPv6 Address, and create "
+        "forward A & AAAA, and reverse PTR records (4 actions) with a single command."
     )
 )
 def add_records():
