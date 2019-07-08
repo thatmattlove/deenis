@@ -55,8 +55,7 @@ class Deenis:
     def AddHost(self, input_params):
         """
         Attempts to add a "single" host record. For a given FQDN, will
-        add A, AAAA, and 2 PTR
-        records.
+        add A, AAAA, and 2 PTR records.
         """
         records = construct.records(**input_params)
         response = []
