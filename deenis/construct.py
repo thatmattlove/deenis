@@ -6,9 +6,10 @@ import ipaddress
 
 
 def records(**kwargs):
-    """Builds list of nested dicts where each parent key is the zone, and each zone's child dict \
-    contains a k/v of DNS record type (A, AAAA, PTR, etc.), DNS record name, and DNS record \
-    content. For example: \
+    """
+    Builds list of nested dicts where each parent key is the zone, and
+    each zone's child dict contains a k/v of DNS record type (A, AAAA,
+    PTR, etc.), DNS record name, and DNS record content. For example:
     [
         {"example.com":
             {"type": "A", "name": "host1", "content": "192.0.2.1"}
