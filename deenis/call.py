@@ -18,9 +18,11 @@ cache = diskcache.Cache(cache_dir)
 class cloudflare:
     """Cloudflare-specific functions"""
 
-    # pylint: disable=too-few-public-methods
+    # pylint: disable=too-few-public-methods,invalid-name
     # Dear Pylint: Sometimes, one must make one's code scalable for future additions. This is one
     #              of those times.
+    #
+    # invalid-name disabled so that class name can be dynamically called.
 
     def __init__(self, provider_conf):
         self.api = provider_conf["api"]
@@ -81,7 +83,7 @@ class cloudflare:
             ][0]
             if not target_params:
                 raise RuntimeError(
-                    f"Error: Target Params for {zone} are {target_params}"
+                    f"Error: Target Params are missing for Zone ID {zone_id}"
                 )
             provider_params = {
                 "type": target_params["type"],

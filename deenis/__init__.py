@@ -12,8 +12,6 @@ from pathlib import Path
 from deenis import call
 from deenis import construct
 
-from logzero import logger
-
 
 class Deenis:
     """
@@ -35,14 +33,12 @@ class Deenis:
         elif isinstance(self.config_params, str):
             config_path = Path(config_params).resolve()
             if not config_path.exists():
-                raise FileNotFoundError(
-                    "Config file {} not found.".format(self.config_path)
-                )
-            elif config_path.exists():
-                import yaml
+                raise FileNotFoundError("Config file {} not found.".format(config_path))
 
-                with open(config_path) as config_yaml:
-                    self.conf = yaml.safe_load(config_yaml)
+            import yaml
+
+            with open(config_path) as config_yaml:
+                self.conf = yaml.safe_load(config_yaml)
         self.providers = [provider for provider in self.conf["provider"]]
         self.zones = [zone for zone in self.conf["zone"]]
         self.zp_map = {}
@@ -52,13 +48,13 @@ class Deenis:
                 if provider in self.conf["zone"][zone]["providers"]:
                     self.zp_map[provider].append(zone)
 
-    def AddHost(self, input_params):
+    def map_zones(self, records):
         """
-        Attempts to add a "single" host record. For a given FQDN, will
-        add A, AAAA, and 2 PTR records.
+        Maps input record data to configured providers and zones.
+
+        Returns dict of provider configs and zone mappings specific to
+        the input records.
         """
-        records = construct.records(**input_params)
-        response = []
         add_map = {}
         filtered_records = []
         for record in records:
@@ -74,9 +70,36 @@ class Deenis:
                 if zone_name in provider_zones:
                     filtered_records.append({zone_name: record[zone_name]})
                 add_map[provider] = (provider_conf, filtered_records)
-        for provider in add_map.keys():
+        return add_map
+
+    def AddHost(self, input_params):
+        """
+        Attempts to add a "single" host record. For a given FQDN, will
+        add A, AAAA, and 2 PTR records.
+        """
+        records = construct.host_records(**input_params)
+        add_map = self.map_zones(records)
+        for provider, params in add_map.items():
             response_class = getattr(call, provider)
-            provider_response = response_class(add_map[provider][0]).add_record(
-                add_map[provider][1]
-            )
+            provider_response = response_class(params[0]).add_record(params[1])
+            return provider_response
+
+    def TenantReverse(self, input_params):
+        """
+        Input Format:
+        {
+            "crm_id": 12345,
+            "host4": "ip4.example.com",
+            "host6": "ip6.example.com",
+            "prefix4": "192.0.2.0/28",
+            "prefix6": "2001:db8::/48"
+        }
+        """
+        if input_params["crm_id"] and isinstance(input_params["crm_id"], int):
+            input_params["crm_id"] = str(input_params["crm_id"])
+        records = construct.tenant_records(**input_params)
+        add_map = self.map_zones(records)
+        for provider, params in add_map.items():
+            response_class = getattr(call, provider)
+            provider_response = response_class(params[0]).add_record(params[1])
             return provider_response
