@@ -181,8 +181,9 @@ def tenant_records(crm_id=None, host4=None, host6=None, prefix4=None, prefix6=No
         target6 = host4
     elif prefix6 and not host4 and not host6:
         raise AttributeError("No hostname was provided as a PTR target")
-    if crm_id:
+    if crm_id and host4:
         target4 = ".".join([crm_id, target4])
+    if crm_id and host6:
         target6 = ".".join([crm_id, target6])
     records_list = []
     if prefix4:
