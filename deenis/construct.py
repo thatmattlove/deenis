@@ -53,7 +53,33 @@ def record_ptr4(host_in, ip_in):
 
 def record_ptr6(host_in, ip_in):
     """Validates and constructs PTR record parameters for IPv6."""
-    nibs = {32: -10, 36: -11, 40: -12, 44: -13, 48: -14, 52: -15, 56: -16}
+    nibs = {
+        32: -10,
+        36: -11,
+        40: -12,
+        44: -13,
+        48: -14,
+        52: -15,
+        56: -16,
+        60: -16,
+        64: -17,
+        68: -18,
+        72: -19,
+        76: -20,
+        80: -21,
+        84: -22,
+        88: -23,
+        92: -24,
+        96: -25,
+        100: -26,
+        104: -27,
+        108: -28,
+        112: -29,
+        116: -30,
+        120: -31,
+        124: -32,
+        128: -33,
+    }
     try:
         prefix_len = ipaddress.ip_network(ip_in).prefixlen
         if prefix_len not in nibs.keys():
